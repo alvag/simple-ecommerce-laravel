@@ -8,7 +8,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return 'Respuesta desde controlador';
+        return view('products.index');
     }
 
     public function create()
@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function show($product)
     {
-        return 'Respuesta desde controlador';
+        return view('products.show');
     }
 
     public function edit($product)
