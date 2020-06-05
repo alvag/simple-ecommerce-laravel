@@ -1,39 +1,52 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>Lista de Productos</h1>
+@extends('layouts.master')
+@section('content')
 
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-light">
-        <tr>
-            <th>Id</th>
-            <th>Título</th>
-            <th>Descripción</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>Producto 1</td>
-            <td>Descripción del Producto 1</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Producto 2</td>
-            <td>Descripción del Producto 2</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <h1>Lista de Productos</h1>
 
+    <a class="btn btn-success" href="{{route('products.create')}}">Crear</a>
 
-</body>
-</html>
+    @empty($products)
+        <div class="alert alert-warning">
+            No hay productos disponibles
+        </div>
+    @else
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($products as $product)
+                    <tr>
+                        <td>{{$product->id}}</td>
+                        <td>{{$product->title}}</td>
+                        <td>{{$product->description}}</td>
+                        <td>{{$product->price}}</td>
+                        <td>{{$product->stock}}</td>
+                        <td>{{$product->status}}</td>
+                        <td>
+                            <a class="btn btn-link" href="{{route('products.show', ['product'=>$product->id])}}">Ver</a>
+                            <a class="btn btn-link"
+                               href="{{route('products.edit', ['product'=>$product->id])}}">Editar</a>
+                            <form method="POST" action="{{route('products.destroy', ['product'=>$product->id])}}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+
+                </tbody>
+            </table>
+        </div>
+    @endempty
+@endsection

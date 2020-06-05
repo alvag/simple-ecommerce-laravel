@@ -2,43 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Product;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('products.index');
+        return view( 'products.index' )->with( [
+            'products' => Product::all()->sortByDesc( 'id' )
+        ] );
     }
 
     public function create()
     {
-        return 'Respuesta desde controlador';
+        return view( 'products.create' );
     }
 
     public function store()
     {
-        return 'Respuesta desde controlador';
+        Product::create( request()->all() );
+        return redirect()->route( 'products.index' );
     }
 
-    public function show($product)
+    public function show( $product )
     {
-        return view('products.show');
+        $product = Product::findOrFail( $product );
+        return view( 'products.show' )->with( [
+            'product' => $product
+        ] );
     }
 
-    public function edit($product)
+    public function edit( $product )
     {
-        return 'Respuesta desde controlador';
+        return view( 'products.edit' )->with( [
+            'product' => Product::findOrFail( $product )
+        ] );
     }
 
-    public function update($product)
+    public function update( $product )
     {
-        return 'Respuesta desde controlador';
+        $product = Product::findOrFail( $product );
+        $product->update( request()->all() );
+        return redirect()->route( 'products.index' );
     }
 
-    public function destroy($product)
+    public function destroy( $product )
     {
-        return 'Respuesta desde controlador';
+        $product = Product::findOrFail( $product );
+        $product->delete();
+        return redirect()->route( 'products.index' );
     }
-
 }
