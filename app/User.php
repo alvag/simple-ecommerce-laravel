@@ -22,14 +22,14 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmailVerifiedAt( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt( $value )
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -42,8 +42,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'admin_since'
     ];
+
+    protected $dates = [ 'admin_since' ];
 
     /**
      * The attributes that should be hidden for arrays.

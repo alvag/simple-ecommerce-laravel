@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Product;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware( 'auth' );
+    }
+
     public function index()
     {
         return view( 'products.index' )->with( [
@@ -18,26 +24,9 @@ class ProductController extends Controller
         return view( 'products.create' );
     }
 
-    public function store()
+    public function store( ProductRequest $request )
     {
-        $rules = [
-            'title' => [ 'required', 'max:255' ],
-            'description' => [ 'required', 'max:1000' ],
-            'price' => [ 'required', 'min:1' ],
-            'stock' => [ 'required', 'min:0' ],
-            'status' => [ 'required', 'in:available,unavailable' ]
-        ];
-
-        request()->validate( $rules );
-
-        if ( request()->status == 'available' && request()->stock == 0 ) {
-            return redirect()
-                ->back()
-                ->withInput( request()->all() )
-                ->withErrors( 'Si el producto está disponible no puede tener un stock de 0' );
-        }
-
-        $product = Product::create( request()->all() );
+        $product = Product::create( $request->validated() );
 
         return redirect()
             ->route( 'products.index' )
@@ -45,43 +34,36 @@ class ProductController extends Controller
             ->withSuccess( "El producto con id {$product->id} ha sido creado" );
     }
 
-    public function show( $product )
+    public function show( Product $product )
     {
-        $product = Product::findOrFail( $product );
+//        $product = Product::findOrFail( $product );
+
         return view( 'products.show' )->with( [
             'product' => $product
         ] );
     }
 
-    public function edit( $product )
+    public function edit( Product $product )
     {
         return view( 'products.edit' )->with( [
-            'product' => Product::findOrFail( $product )
+            'product' => $product
         ] );
     }
 
-    public function update( $product )
+    public function update( ProductRequest $request, Product $product )
     {
-        $rules = [
-            'title' => [ 'required', 'max:255' ],
-            'description' => [ 'required', 'max:1000' ],
-            'price' => [ 'required', 'min:1' ],
-            'stock' => [ 'required', 'min:0' ],
-            'status' => [ 'required', 'in:available,unavailable' ]
-        ];
+//        $product = Product::findOrFail( $product );
 
-        request()->validate( $rules );
-
-        $product = Product::findOrFail( $product );
-        $product->update( request()->all() );
+        $product->update( $request->validated() );
         return redirect()
             ->route( 'products.index' )
             ->withSuccess( "El producto con el id {$product->id} fue editado" );
     }
 
-    public function destroy( $product )
+    public function destroy( Product $product )
     {
-        $product = Product::findOrFail( $product );
+//        $product = Product::findOrFail( $product );
+
         $product->delete();
         return redirect()
             ->route( 'products.index' )
