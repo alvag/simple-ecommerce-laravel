@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get( '/', 'MainController@index' )->name( 'main@index' );
 
 Route::resource( 'products', 'ProductController' );
+Route::resource( 'carts', 'CartController' )->only( 'index' );
 
 /*Route::get( 'products', 'ProductController@index' )->name( 'products.index' );
 Route::get( 'products/create', 'ProductController@create' )->name( 'products.create' );
@@ -26,6 +27,8 @@ Route::get( 'products/{product}', 'ProductController@show' )->name( 'products.sh
 Route::get( 'products/{product}/edit', 'ProductController@edit' )->name( 'products.edit' );
 Route::match( [ 'put', 'patch' ], 'products/{product}', 'ProductController@update' )->name( 'products.update' );
 Route::delete( 'products/{product}', 'ProductController@destroy' )->name( 'products.destroy' );*/
+
+Route::resource( 'products.carts', 'ProductCartController' )->only( [ 'store', 'destroy' ] );
 
 Auth::routes();
 

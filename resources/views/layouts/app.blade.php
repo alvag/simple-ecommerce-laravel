@@ -40,6 +40,11 @@
                             Productos
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('carts.index')}}" class="nav-link">
+                            Carrito
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
