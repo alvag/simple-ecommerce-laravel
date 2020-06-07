@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property float $price
  * @property int $stock
  * @property string $status
+ * @property mixed $pivot
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @method static Builder|Product newModelQuery()
@@ -69,6 +70,11 @@ class Product extends Model
     public function scopeAvailable( $query )
     {
         return $query->where( 'status', 'available' );
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->pivot->quantity * $this->price;
     }
 
 }

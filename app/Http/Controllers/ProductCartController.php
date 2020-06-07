@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Cart;
 use App\Product;
 use App\Services\CartService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cookie;
 
 class ProductCartController extends Controller
 {
@@ -40,21 +37,21 @@ class ProductCartController extends Controller
             $product->id => [ 'quantity' => $quantity + 1 ]
         ] );
 
-        $cookie = Cookie::make( 'cart', $cart->id, 7 * 24 * 60 );
-
+        $cookie = $this->cartService->makeCookie( $cart );
         return redirect()->back()->cookie( $cookie );
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Product $product
      * @param Cart $cart
-     * @return Response
+     * @return RedirectResponse
      */
     public function destroy( Product $product, Cart $cart )
     {
-        //
+        $cart->products()->detach( $product->id );
+        $cookie = $this->cartService->makeCookie( $cart );
+        return redirect()->back()->cookie( $cookie );
     }
 
 
